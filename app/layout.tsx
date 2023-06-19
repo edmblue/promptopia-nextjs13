@@ -1,5 +1,6 @@
 import '@styles/globals.css';
 import Nav from '@components/Nav';
+import Provider from '@components/Provider';
 
 type ChildrenProps = {
   children: React.ReactNode;
@@ -7,20 +8,22 @@ type ChildrenProps = {
 
 export const metadata = {
   title: 'Promptopia',
-  description: 'Disconver and Share AI Promps',
+  description: 'Discover and Share AI Promps',
 };
 
 const RootLayout = ({ children }: ChildrenProps) => {
   return (
     <html lang="en">
       <body>
-        <div className="main">
-          <div className="gradient"></div>
-        </div>
-        <main className="app">
-          <Nav />
-          {children}
-        </main>
+        <Provider>
+          <div className="main">
+            <div className="gradient"></div>
+          </div>
+          <main className="app">
+            <Nav />
+            {children}
+          </main>
+        </Provider>
       </body>
     </html>
   );
