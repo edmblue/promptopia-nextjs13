@@ -3,13 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { getProviders, signIn, signOut } from 'next-auth/react';
+import { getProviders, signIn, signOut, useSession } from 'next-auth/react';
 
 const Nav = () => {
-  const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [providers, setProviders] = useState<any>(null);
-  const isUserLoggedIn = true;
-
   useEffect(() => {
     const retriveProviders = async () => {
       const response = await getProviders();
@@ -19,6 +15,10 @@ const Nav = () => {
 
     retriveProviders();
   }, []);
+
+  const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [providers, setProviders] = useState<any>(null);
+  const { data: session } = useSession();
 
   return (
     <>
@@ -38,7 +38,7 @@ const Nav = () => {
         {/* Desktop Navigation */}
 
         <div className="hidden sm:block">
-          {isUserLoggedIn ? (
+          {session ? (
             <div className="flex gap-3">
               <Link href="/create-prompt" className="black_btn">
                 Create Post
@@ -58,23 +58,23 @@ const Nav = () => {
           ) : (
             <>
               {providers &&
-                Object.values(providers).map((provider: any) => {
+                Object.values(providers).map((provider: any) => (
                   <button
-                    key={provider.key}
+                    key={provider.id}
                     type="button"
                     className="black_btn"
                     onClick={() => signIn(provider.id)}
                   >
                     Sign in
-                  </button>;
-                })}
+                  </button>
+                ))}
             </>
           )}
         </div>
 
         {/* Mobile Navigation **/}
         <div className="sm:hidden">
-          {isUserLoggedIn ? (
+          {session ? (
             <div className="flex">
               <Image
                 src="/assets/images/logo.svg"
@@ -117,16 +117,16 @@ const Nav = () => {
           ) : (
             <>
               {providers &&
-                Object.values(providers).map((provider: any) => {
+                Object.values(providers).map((provider: any) => (
                   <button
-                    key={provider.key}
+                    key={provider.id}
                     type="button"
                     className="black_btn"
                     onClick={() => signIn(provider.id)}
                   >
                     Sign in
-                  </button>;
-                })}
+                  </button>
+                ))}
             </>
           )}
         </div>

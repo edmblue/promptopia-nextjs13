@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { DefaultSession } from 'next-auth';
 import type { Session, User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
@@ -16,6 +16,6 @@ declare module 'next-auth' {
     user: {
       id: UserId;
       username?: string | null;
-    };
+    } & DefaultSession['user'];
   }
 }
