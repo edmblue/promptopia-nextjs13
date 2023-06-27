@@ -38,7 +38,7 @@ const Nav = () => {
         {/* Desktop Navigation */}
 
         <div className="hidden sm:block">
-          {session ? (
+          {session?.user ? (
             <div className="flex gap-3">
               <Link href="/create-prompt" className="black_btn">
                 Create Post
@@ -48,10 +48,11 @@ const Nav = () => {
               </button>
               <Link href="/my-profile">
                 <Image
-                  src="/assets/images/logo.svg"
+                  src={session?.user.image!}
                   alt="profile image"
                   height={36}
                   width={36}
+                  className="rounded-full"
                 />
               </Link>
             </div>
@@ -74,14 +75,14 @@ const Nav = () => {
 
         {/* Mobile Navigation **/}
         <div className="sm:hidden">
-          {session ? (
+          {session?.user ? (
             <div className="flex">
               <Image
-                src="/assets/images/logo.svg"
+                src={session?.user.image!}
                 alt="Profile Image"
                 height={36}
                 width={36}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-full"
                 onClick={() => {
                   setToggleDropdown((prev) => !prev);
                 }}
@@ -107,7 +108,7 @@ const Nav = () => {
                       signOut();
                       setToggleDropdown(false);
                     }}
-                    className="outline_btn"
+                    className="outline_btn w-full"
                   >
                     Sign Out
                   </button>
