@@ -7,13 +7,11 @@ type FormProps = {
   type: string;
   post: PostType;
   setPost: React.Dispatch<React.SetStateAction<PostType>>;
+  submitting: boolean;
+  handleSubmit: (e: FormEvent) => void;
 };
 
-const Form = ({ type, post, setPost }: FormProps) => {
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-  };
-
+const Form = ({ type, post, setPost, submitting, handleSubmit }: FormProps) => {
   return (
     <section className="mt-16 w-full max-w-full">
       <h1 className="text-5xl sm:text-6xl font-extrabold">
@@ -65,8 +63,12 @@ const Form = ({ type, post, setPost }: FormProps) => {
           <Link href="/" className="text-gray-600">
             Cancel
           </Link>
-          <button className="bg-orange-500 text-white px-4 rounded-full py-1 text-md">
-            Create
+          <button
+            disabled={submitting}
+            type="submit"
+            className="bg-orange-500 text-white px-4 rounded-full py-1 text-md"
+          >
+            {submitting ? 'Loading...' : type}
           </button>
         </div>
       </form>

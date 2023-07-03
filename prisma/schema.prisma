@@ -47,8 +47,29 @@ model User {
   image       String?
   accounts    Account[]
   sessions    Session[]
+
+  //Relational Fields
+  prompts Prompt[]
 }
 
+model Prompt {
+  id String @id @default(uuid()) 
+  prompt String
+
+  //Relational Fields
+  userId String
+  user User @relation(fields:[userId], references: [id], onDelete: Cascade)
+  tags PromptTag[]
+
+  @@index([userId])
+}
+
+model PromptTag {
+  id String @id @default(uuid()) 
+  tag String 
+  //Relational Fields
+  prompt Prompt[]
+}
 
 
 
