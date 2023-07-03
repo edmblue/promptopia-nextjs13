@@ -12,7 +12,9 @@ const TagsInput = ({ post, setPost }: TagsProps) => {
   const [tagInput, setTagInput] = useState('');
   const [error, setError] = useState(false);
 
-  const addTag = (value: string) => {
+  const addTag = (value: string, e: React.KeyboardEvent) => {
+    e.preventDefault();
+
     if (value.length < 3) {
       setError(true);
       return;
@@ -54,9 +56,9 @@ const TagsInput = ({ post, setPost }: TagsProps) => {
               value={tagInput}
               placeholder="Add a new tag"
               onChange={(e) => setTagInput(e.target.value)}
-              onKeyUp={(e) =>
+              onKeyDown={(e) =>
                 e.key === 'Enter'
-                  ? addTag((e.target as HTMLInputElement).value)
+                  ? addTag((e.target as HTMLInputElement).value, e)
                   : null
               }
             />
