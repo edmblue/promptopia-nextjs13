@@ -1,8 +1,28 @@
+'use client';
+
 import PromptCard from './PromptCard';
+import { useEffect, useState } from 'react';
 
 const Feed = () => {
+  const [userPrompts, setUserPrompts] = useState([]);
+
+  useEffect(() => {
+    const retrieveUsersPromps = async () => {
+      try {
+        const response = await fetch('/api/prompt');
+        const result = await response.json();
+
+        setUserPrompts(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    retrieveUsersPromps();
+  }, []);
+  console.log(userPrompts);
   return (
-    <>
+    <div className="my-10">
       <section className="w-full my-10">
         <form className="text-center">
           <input
@@ -12,7 +32,7 @@ const Feed = () => {
           />
         </form>
       </section>
-      <section className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+      <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         <PromptCard />
         <PromptCard />
         <PromptCard />
@@ -22,7 +42,7 @@ const Feed = () => {
         <PromptCard />
         <PromptCard />
       </section>
-    </>
+    </div>
   );
 };
 
