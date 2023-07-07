@@ -10,7 +10,7 @@ type bodyType = {
 const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
-  /*   await prisma.prompt.deleteMany({});
+  /* await prisma.prompt.deleteMany({});
   await prisma.promptTag.deleteMany({}); */
   const body = await req.json();
 

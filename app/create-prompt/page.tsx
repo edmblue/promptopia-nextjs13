@@ -15,8 +15,8 @@ const CreatePrompt = () => {
   const { data: session } = useSession();
 
   const [post, setPost] = useState<PostType>({
-    prompt: 'Prueba',
-    tags: ['Casa', 'Barco'],
+    prompt: '',
+    tags: [],
   });
   const [submitting, setSubmitting] = useState(false);
 

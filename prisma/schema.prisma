@@ -54,7 +54,7 @@ model User {
 
 model Prompt {
   id String @id @default(uuid()) 
-  prompt String
+  prompt String @db.Text
 
   //Relational Fields
   userId String
