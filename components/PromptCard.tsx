@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { UserType, PromptType, tagType } from './Feed';
 import Image from 'next/image';
 
@@ -6,11 +9,20 @@ type PromptCardType = {
   prompt: PromptType;
 };
 
-// hacer copia
 // my profile
 
 const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
   const { name, email, image } = userPrompt;
+
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyPrompt = (idPrompt: string) => {
+    navigator.clipboard.writeText(prompt.prompt);
+    if (idPrompt === prompt.id) {
+      setIsCopied(true);
+    }
+    setTimeout(() => setIsCopied(false), 1000);
+  };
 
   return (
     <div className="w-full flex flex-col gap-4 border border-gray-300 p-3 rounded-lg">
@@ -28,7 +40,14 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
             <p className="text-gray-700 text-sm">{email}</p>
           </div>
         </div>
-        <div className="rounded-full bg-gray-400 w-7 h-7"></div>
+        <Image
+          src={isCopied ? '/assets/icons/tick.svg' : '/assets/icons/copy.svg'}
+          alt="Prompt Card Icon"
+          height={35}
+          width={35}
+          className="rounded-full cursor-pointer bg-gray-200 p-2"
+          onClick={() => copyPrompt(prompt.id)}
+        />
       </div>
       <div>
         <p className="text-sm">{prompt.prompt}</p>
