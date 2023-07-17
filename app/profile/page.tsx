@@ -39,7 +39,7 @@ const UserProfile = () => {
           prompts and inspire others with the power of your imagination
         </p>
       </section>
-      <div>
+      <div className="mt-10 flex flex-col md:flex-row gap-6 ">
         {userInfo?.prompts.map((prompt): React.ReactNode => {
           return (
             <PromptCard key={prompt.id} prompt={prompt} userPrompt={userInfo} />

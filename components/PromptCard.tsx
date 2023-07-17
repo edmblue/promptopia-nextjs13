@@ -3,16 +3,23 @@
 import { useState } from 'react';
 import { UserType, PromptType, tagType } from './Feed';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 type PromptCardType = {
   userPrompt: UserType;
   prompt: PromptType;
 };
 
-// my profile
-
 const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
-  const { name, email, image } = userPrompt;
+  const { name, email, image, id } = userPrompt;
+  const { data: session } = useSession();
+
+  const pathName = usePathname();
+  const router = useRouter();
+
+  console.log(pathName);
 
   const [isCopied, setIsCopied] = useState(false);
 
@@ -22,6 +29,19 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
       setIsCopied(true);
     }
     setTimeout(() => setIsCopied(false), 1000);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/prompt/${prompt.id}`, {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+
+      if (result.status === 200) router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -63,6 +83,16 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
           </ul>
         </div>
       </div>
+      {pathName == '/profile' && id === session?.user.id && (
+        <div className="flex justify-center gap-2">
+          <Link className="text-green-800 text-sm" href="/">
+            Edit
+          </Link>
+          <button onClick={handleDelete} className="text-red-800 text-sm">
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };
