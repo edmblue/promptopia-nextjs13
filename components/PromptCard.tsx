@@ -10,9 +10,10 @@ import { useSession } from 'next-auth/react';
 type PromptCardType = {
   userPrompt: UserType;
   prompt: PromptType;
+  handleSearch?: (searchValue: string) => void;
 };
 
-const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
+const PromptCard = ({ userPrompt, prompt, handleSearch }: PromptCardType) => {
   const { name, email, image, id } = userPrompt;
   const { data: session } = useSession();
 
@@ -78,7 +79,9 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
             {prompt.tags.map((tag: tagType) => {
               return (
                 <li key={tag.id} className="text-blue-500 text-sm">
-                  #{tag.tag}
+                  <button onClick={() => handleSearch && handleSearch(tag.tag)}>
+                    #{tag.tag}
+                  </button>
                 </li>
               );
             })}

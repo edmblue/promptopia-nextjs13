@@ -28,7 +28,7 @@ export type UserType = {
 const Feed = () => {
   const [userPrompts, setUserPrompts] = useState([]);
   const [searchInput, setSearchInput] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [filteredResults, setFilteredResults] = useState<UserType[]>([]);
 
   useEffect(() => {
     const retrieveUsersPromps = async () => {
@@ -49,19 +49,35 @@ const Feed = () => {
     setSearchInput(searchValue);
 
     if (searchValue.length > 0) {
-      const searchPosts = userPrompts.map((userPrompt: UserType) => {
-        return userPrompt.prompts.filter((selectedPromp) =>
-          selectedPromp.prompt.includes(searchValue)
-        );
+      const regex = new RegExp(searchValue, 'i');
+
+      const filteredPrompts = userPrompts.map((userInfo: UserType) => {
+        const matchingName = regex.test(userInfo.name);
+        const matchingEmail = regex.test(userInfo.email);
+
+        if (matchingName || matchingEmail) {
+          return userInfo;
+        } else {
+          const matchingPrompts = userInfo.prompts.filter((selectedPrompt) => {
+            const matchingTags = selectedPrompt.tags.some((selectedTag) =>
+              regex.test(selectedTag.tag)
+            );
+            return regex.test(selectedPrompt.prompt) || matchingTags;
+          });
+          return {
+            ...userInfo,
+            prompts: matchingPrompts,
+          };
+        }
       });
 
-      console.log(searchPosts);
+      setFilteredResults(filteredPrompts);
     }
   };
 
   return (
-    <div className="my-10">
-      <section className="w-full my-10">
+    <div className="my-10 w-full">
+      <section className="my-10">
         <form className="text-center">
           <input
             className="max-w-xl w-full p-3 shadow-xl rounded-md"
@@ -75,27 +91,43 @@ const Feed = () => {
         </form>
       </section>
       <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-        {filteredPosts.length > 0 ? (
-          <div></div>
-        ) : (
-          userPrompts.map((userPrompt: UserType): React.ReactNode => {
-            const { prompts } = userPrompt;
+        {searchInput.length > 0
+          ? filteredResults.map((userPrompt: UserType): React.ReactNode => {
+              const { prompts } = userPrompt;
 
-            if (prompts.length > 0) {
-              return prompts.map((prompt) => {
-                return (
-                  <PromptCard
-                    key={prompt.id}
-                    prompt={prompt}
-                    userPrompt={userPrompt}
-                  />
-                );
-              });
-            }
+              if (prompts.length > 0) {
+                return prompts.map((prompt) => {
+                  return (
+                    <PromptCard
+                      key={prompt.id}
+                      prompt={prompt}
+                      userPrompt={userPrompt}
+                      handleSearch={handleSearch}
+                    />
+                  );
+                });
+              }
 
-            return null;
-          })
-        )}
+              return null;
+            })
+          : userPrompts.map((userPrompt: UserType): React.ReactNode => {
+              const { prompts } = userPrompt;
+
+              if (prompts.length > 0) {
+                return prompts.map((prompt) => {
+                  return (
+                    <PromptCard
+                      key={prompt.id}
+                      prompt={prompt}
+                      userPrompt={userPrompt}
+                      handleSearch={handleSearch}
+                    />
+                  );
+                });
+              }
+
+              return null;
+            })}
       </section>
     </div>
   );
