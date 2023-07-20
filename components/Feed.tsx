@@ -27,6 +27,8 @@ export type UserType = {
 
 const Feed = () => {
   const [userPrompts, setUserPrompts] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     const retrieveUsersPromps = async () => {
@@ -42,6 +44,21 @@ const Feed = () => {
 
     retrieveUsersPromps();
   }, []);
+
+  const handleSearch = (searchValue: string) => {
+    setSearchInput(searchValue);
+
+    if (searchValue.length > 0) {
+      const searchPosts = userPrompts.map((userPrompt: UserType) => {
+        return userPrompt.prompts.filter((selectedPromp) =>
+          selectedPromp.prompt.includes(searchValue)
+        );
+      });
+
+      console.log(searchPosts);
+    }
+  };
+
   return (
     <div className="my-10">
       <section className="w-full my-10">
@@ -50,27 +67,35 @@ const Feed = () => {
             className="max-w-xl w-full p-3 shadow-xl rounded-md"
             type="text"
             placeholder="Search for a tag or a username"
+            value={searchInput}
+            onChange={(e) => {
+              handleSearch(e.target.value);
+            }}
           />
         </form>
       </section>
       <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-        {userPrompts.map((userPrompt: UserType): React.ReactNode => {
-          const { prompts } = userPrompt;
+        {filteredPosts.length > 0 ? (
+          <div></div>
+        ) : (
+          userPrompts.map((userPrompt: UserType): React.ReactNode => {
+            const { prompts } = userPrompt;
 
-          if (prompts.length > 0) {
-            return prompts.map((prompt) => {
-              return (
-                <PromptCard
-                  key={prompt.id}
-                  prompt={prompt}
-                  userPrompt={userPrompt}
-                />
-              );
-            });
-          }
+            if (prompts.length > 0) {
+              return prompts.map((prompt) => {
+                return (
+                  <PromptCard
+                    key={prompt.id}
+                    prompt={prompt}
+                    userPrompt={userPrompt}
+                  />
+                );
+              });
+            }
 
-          return null;
-        })}
+            return null;
+          })
+        )}
       </section>
     </div>
   );

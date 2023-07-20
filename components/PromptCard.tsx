@@ -19,8 +19,6 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
   const pathName = usePathname();
   const router = useRouter();
 
-  console.log(pathName);
-
   const [isCopied, setIsCopied] = useState(false);
 
   const copyPrompt = (idPrompt: string) => {
@@ -38,14 +36,16 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
       });
       const result = await response.json();
 
-      if (result.status === 200) router.push('/');
+      console.log(result);
+
+      if (response.ok) router.push('/');
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 border border-gray-300 p-3 rounded-lg">
+    <div className="w-full flex flex-col gap-4 border border-gray-300 p-3 rounded-lg h-fit">
       <div className="flex flex-between ">
         <div className="flex gap-2 items-center">
           <Image
@@ -54,6 +54,8 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
             height={40}
             width={40}
             className="rounded-full"
+            placeholder="blur"
+            blurDataURL={image}
           />
           <div>
             <h3 className="font-bold">{name}</h3>
@@ -85,7 +87,10 @@ const PromptCard = ({ userPrompt, prompt }: PromptCardType) => {
       </div>
       {pathName == '/profile' && id === session?.user.id && (
         <div className="flex justify-center gap-2">
-          <Link className="text-green-800 text-sm" href="/">
+          <Link
+            className="text-green-800 text-sm"
+            href={`/edit-prompt?id=${prompt.id}`}
+          >
             Edit
           </Link>
           <button onClick={handleDelete} className="text-red-800 text-sm">

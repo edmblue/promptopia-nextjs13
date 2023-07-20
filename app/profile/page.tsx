@@ -26,8 +26,6 @@ const UserProfile = () => {
     if (session?.user.id) retrieveUserInfo();
   }, [session?.user.id]);
 
-  console.log(userInfo);
-
   return (
     <div className=" my-10 w-full">
       <section className="">
@@ -39,7 +37,7 @@ const UserProfile = () => {
           prompts and inspire others with the power of your imagination
         </p>
       </section>
-      <div className="mt-10 flex flex-col md:flex-row gap-6 ">
+      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full ">
         {userInfo?.prompts.map((prompt): React.ReactNode => {
           return (
             <PromptCard key={prompt.id} prompt={prompt} userPrompt={userInfo} />
