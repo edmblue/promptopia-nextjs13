@@ -90,7 +90,7 @@ const Feed = () => {
           />
         </form>
       </section>
-      <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+      <section className="md:columns-2 lg:columns-3 w-full">
         {searchInput.length > 0
           ? filteredResults.map((userPrompt: UserType): React.ReactNode => {
               const { prompts } = userPrompt;

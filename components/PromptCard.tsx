@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import Swal from 'sweetalert2';
 
 type PromptCardType = {
   userPrompt: UserType;
@@ -30,31 +31,56 @@ const PromptCard = ({ userPrompt, prompt, handleSearch }: PromptCardType) => {
     setTimeout(() => setIsCopied(false), 1000);
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`/api/prompt/${prompt.id}`, {
-        method: 'DELETE',
-      });
-      const result = await response.json();
+  const handleDelete = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePrompt();
+        Swal.fire('Deleted!', 'Your Prompt has been deleted.', 'success');
+      }
+    });
 
-      console.log(result);
+    const deletePrompt = async () => {
+      try {
+        const response = await fetch(`/api/prompt/${prompt.id}`, {
+          method: 'DELETE',
+        });
+        const result = await response.json();
 
-      if (response.ok) router.push('/');
-    } catch (error) {
-      console.log(error);
+        console.log(result);
+
+        if (response.ok) router.push('/');
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  };
+
+  const handleClick = () => {
+    if (session?.user.id === userPrompt.id) {
+      return router.push('/profile');
     }
+
+    router.push(`/profile/${userPrompt.id}?name=${userPrompt.name}`);
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 border border-gray-300 p-3 rounded-lg h-fit">
+    <div className="w-full flex flex-col gap-4 border border-gray-300 p-3 rounded-lg h-fit my-3 break-inside-avoid">
       <div className="flex flex-between ">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center" onClick={handleClick}>
           <Image
             src={image}
             alt="Profile Picture"
             height={40}
             width={40}
-            className="rounded-full"
+            className="rounded-full cursor-pointer"
             placeholder="blur"
             blurDataURL={image}
           />
