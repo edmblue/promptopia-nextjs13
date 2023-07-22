@@ -2,6 +2,7 @@
 
 import PromptCard from './PromptCard';
 import { useEffect, useState } from 'react';
+import PromptsLists from './PromptsLists';
 
 export type tagType = {
   id: string;
@@ -91,43 +92,17 @@ const Feed = () => {
         </form>
       </section>
       <section className="md:columns-2 lg:columns-3 w-full">
-        {searchInput.length > 0
-          ? filteredResults.map((userPrompt: UserType): React.ReactNode => {
-              const { prompts } = userPrompt;
-
-              if (prompts.length > 0) {
-                return prompts.map((prompt) => {
-                  return (
-                    <PromptCard
-                      key={prompt.id}
-                      prompt={prompt}
-                      userPrompt={userPrompt}
-                      handleSearch={handleSearch}
-                    />
-                  );
-                });
-              }
-
-              return null;
-            })
-          : userPrompts.map((userPrompt: UserType): React.ReactNode => {
-              const { prompts } = userPrompt;
-
-              if (prompts.length > 0) {
-                return prompts.map((prompt) => {
-                  return (
-                    <PromptCard
-                      key={prompt.id}
-                      prompt={prompt}
-                      userPrompt={userPrompt}
-                      handleSearch={handleSearch}
-                    />
-                  );
-                });
-              }
-
-              return null;
-            })}
+        {searchInput.length > 0 ? (
+          <PromptsLists
+            userPromptList={filteredResults}
+            handleSearch={handleSearch}
+          />
+        ) : (
+          <PromptsLists
+            userPromptList={userPrompts}
+            handleSearch={handleSearch}
+          />
+        )}
       </section>
     </div>
   );

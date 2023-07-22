@@ -11,8 +11,6 @@ type TagsType = {
   tag: string;
 };
 
-//ADD CONFIRMATION
-
 const EditPrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
