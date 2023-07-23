@@ -11,7 +11,7 @@ export const metadata = {
   description: 'Discover and Share AI Promps',
 };
 
-const RootLayout = ({ children }: ChildrenProps) => {
+const RootLayout = async ({ children }: ChildrenProps) => {
   return (
     <html lang="en">
       <body>

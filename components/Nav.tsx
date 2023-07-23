@@ -20,8 +20,6 @@ const Nav = () => {
   const [providers, setProviders] = useState<any>(null);
   const { data: session } = useSession();
 
-  //implementar lib/auth para siempre tener el user desde el serverside
-
   return (
     <>
       <nav className="w-full mt-4 flex gap-3 flex-between">

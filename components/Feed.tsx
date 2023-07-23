@@ -1,6 +1,5 @@
 'use client';
 
-import PromptCard from './PromptCard';
 import { useEffect, useState } from 'react';
 import PromptsLists from './PromptsLists';
 

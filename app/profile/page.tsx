@@ -1,12 +1,11 @@
 import Profile from '@components/Profile';
-import { authOptions } from '@lib/auth';
-import { getServerSession } from 'next-auth';
+import { getCurrentUser } from '@lib/session';
 
 const UserProfile = async () => {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  const userName = session?.user.name;
-  const userId = session?.user.id;
+  const userName = user?.name;
+  const userId = user?.id;
   const description = `Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination`;
 
   return (
