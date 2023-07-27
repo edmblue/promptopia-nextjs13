@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   await prisma.promptTag.deleteMany({}); */
   const body = await req.json();
 
-  const { userId, prompt, tags }: bodyType = body;
+  const { userId, prompt, tags }: bodyType = await body;
 
   try {
     const tagsChecker = tags.map(async (tag) => {

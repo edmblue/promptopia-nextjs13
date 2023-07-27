@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export async function DELETE(req: Request, { params }: any) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const deletedPrompt = await prisma.prompt.delete({
       where: {
         id: id,
