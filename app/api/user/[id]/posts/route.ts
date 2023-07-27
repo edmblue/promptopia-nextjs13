@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 export async function GET(req: Request, { params }: any) {
-  const { id } = params;
+  const { id } = await params;
 
   const promptsByUser = await prisma.user.findMany({
     where: {
