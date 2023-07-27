@@ -1,11 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-import type { NextApiRequest } from 'next';
 import { bodyType } from '../new/route';
 
 const prisma = new PrismaClient();
 
-export async function DELETE(req: NextApiRequest, { params }: any) {
+export async function DELETE(req: Request, { params }: any) {
   try {
     const { id } = params;
     const deletedPrompt = await prisma.prompt.delete({
