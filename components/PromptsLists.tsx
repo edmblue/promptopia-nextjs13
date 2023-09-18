@@ -9,7 +9,7 @@ type PromptListsType = {
 const PromptsLists = ({ userPromptList, handleSearch }: PromptListsType) => {
   return (
     <div>
-      {userPromptList.map((userPrompt: UserType): React.ReactNode => {
+      {userPromptList?.map((userPrompt: UserType): React.ReactNode => {
         const { prompts } = userPrompt;
 
         if (prompts.length > 0) {

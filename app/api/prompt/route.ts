@@ -3,7 +3,7 @@ import type { NextApiResponse } from 'next';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
-
+export const revalidate = 1;
 export async function GET() {
   try {
     const users = await prisma.user.findMany({
