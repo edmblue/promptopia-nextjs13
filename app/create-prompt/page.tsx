@@ -38,9 +38,7 @@ const CreatePrompt = () => {
       });
 
       if (response.ok) {
-        setTimeout(() => {
-          router.push('/');
-        }, 3000);
+        router.push('/');
       }
     } catch (error) {
       console.log(error);
