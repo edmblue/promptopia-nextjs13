@@ -54,12 +54,10 @@ const PromptCard = ({ userPrompt, prompt, handleSearch }: PromptCardType) => {
         });
         const result = await response.json();
 
-        console.log(result);
-
         if (response.ok) {
           setTimeout(() => {
             router.push('/');
-          }, 1500);
+          }, 3000);
         }
       } catch (error) {
         console.log(error);

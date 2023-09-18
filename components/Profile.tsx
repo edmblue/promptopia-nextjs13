@@ -37,11 +37,19 @@ const Profile = ({ userId, userName, description }: ProfileTypes) => {
         <p className="desc">{description}</p>
       </section>
       <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full ">
-        {userInfo?.prompts.map((prompt): React.ReactNode => {
-          return (
-            <PromptCard key={prompt.id} prompt={prompt} userPrompt={userInfo} />
-          );
-        })}
+        {userInfo?.prompts.length! > 0 ? (
+          userInfo?.prompts.map((prompt): React.ReactNode => {
+            return (
+              <PromptCard
+                key={prompt.id}
+                prompt={prompt}
+                userPrompt={userInfo}
+              />
+            );
+          })
+        ) : (
+          <p className="italic">There is no prompts available</p>
+        )}
       </div>
     </div>
   );
