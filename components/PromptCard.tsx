@@ -56,7 +56,11 @@ const PromptCard = ({ userPrompt, prompt, handleSearch }: PromptCardType) => {
 
         console.log(result);
 
-        if (response.ok) router.push('/');
+        if (response.ok) {
+          setTimeout(() => {
+            router.push('/');
+          }, 1500);
+        }
       } catch (error) {
         console.log(error);
       }
